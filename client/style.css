@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  width: 100%;
+  height: 100%;
+}
+#root {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+}
+#text {
+  flex: 50px 0 0;
+}
+#trackpad {
+  flex: 200px 5 1;
+  background-color: #efefef;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  margin: 10px 0;
+}
+#buttons {
+  flex: 40px 1 1;
+  display: flex;
+  flex-flow: row nowrap;
+}
+#buttons button {
+  flex: 50px 1 1;
+  margin: 0 5px;
+}
