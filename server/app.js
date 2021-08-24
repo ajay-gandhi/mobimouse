@@ -70,7 +70,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("type", (msg) => {
-    exec(`osascript -e 'tell application "System Events" to keystroke "${msg}"'`);
+    if (msg === "Enter") {
+      exec(`osascript -e 'tell application "System Events" to keystroke (ASCII character 13)'`);
+    } else {
+      exec(`osascript -e 'tell application "System Events" to keystroke "${msg}"'`);
+    }
   });
 
   socket.on("disconnect", () => {
