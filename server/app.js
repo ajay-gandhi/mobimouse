@@ -36,25 +36,30 @@ io.on("connection", (socket) => {
   const mouseMover = spawn(PATH_TO_MOUSE_MOVER);
   mouseMover.stdin.setEncoding("utf-8");
 
+  // Cursor begins at center of screen
   const lastPosition = {
     x: SCREEN_RES.width / 2,
     y: SCREEN_RES.height / 2,
   };
 
+  // Click commands
   socket.on("click", (msg) => {
-    // Pass command to mouse mover
     console.log(`  Received click, writing to mover: ${msg}`);
     mouseMover.stdin.cork();
     mouseMover.stdin.write(`${msg}\n`);
     mouseMover.stdin.uncork();
   });
 
+  // Move commands
   socket.on("move", (msg) => {
+    // These are received as differential between 0 and 1
+    // Scale these values by sensitivity and some fixed value based on screen
+    // size.
     const [x, y] = msg.split(",").map(n => {
-      return Math.floor(parseFloat(n) * SENSITIVITY * SCREEN_MULTIPLIER) * -1;
+      return Math.floor(parseFloat(n) * SENSITIVITY * SCREEN_MULTIPLIER);
     });
-    const newX = lastPosition.x + x;
-    const newY = lastPosition.y + y;
+    const newX = lastPosition.x - x;
+    const newY = lastPosition.y - y;
     console.log(`  Received move: ${msg}, writing to mover: ${newX},${newY}`);
     mouseMover.stdin.cork();
     mouseMover.stdin.write(`${newX},${newY}\n`);
