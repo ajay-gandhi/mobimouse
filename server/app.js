@@ -70,8 +70,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("type", (msg) => {
+    console.log(`  Received type: ${msg}, executing Applescript`);
     if (msg === "Enter") {
       exec(`osascript -e 'tell application "System Events" to keystroke (ASCII character 13)'`);
+    } else if (msg === "Backspace") {
+      exec(`osascript -e 'tell application "System Events" to keystroke (ASCII character 8)'`);
     } else {
       exec(`osascript -e 'tell application "System Events" to keystroke "${msg}"'`);
     }

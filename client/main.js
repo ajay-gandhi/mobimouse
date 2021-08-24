@@ -61,7 +61,7 @@ rightButton.addEventListener("touchstart", touchStart.bind(null, "r"));
 rightButton.addEventListener("touchend", touchEnd.bind(null, "r"));
 
 /************************************ Text ************************************/
-textInput.addEventListener("keypress", (e) => {
+textInput.addEventListener("keydown", (e) => {
   e.preventDefault();
   socket.emit("type", e.key);
 });
