@@ -41,9 +41,9 @@ io.on("connection", (socket) => {
     y: SCREEN_RES.height / 2,
   };
 
-  socket.on("command", (msg) => {
+  socket.on("click", (msg) => {
     // Pass command to mouse mover
-    console.log(`  Received command, writing to mover: ${msg}`);
+    console.log(`  Received click, writing to mover: ${msg}`);
     mouseMover.stdin.cork();
     mouseMover.stdin.write(`${msg}\n`);
     mouseMover.stdin.uncork();
@@ -55,7 +55,7 @@ io.on("connection", (socket) => {
     });
     const newX = lastPosition.x + x;
     const newY = lastPosition.y + y;
-    console.log(`  Received command: ${msg}, writing to mover: ${newX},${newY}`);
+    console.log(`  Received move: ${msg}, writing to mover: ${newX},${newY}`);
     mouseMover.stdin.cork();
     mouseMover.stdin.write(`${newX},${newY}\n`);
     mouseMover.stdin.uncork();
@@ -64,8 +64,8 @@ io.on("connection", (socket) => {
     lastPosition.y = newY;
   });
 
-  socket.on("test", (msg) => {
-    console.log(msg);
+  socket.on("type", (msg) => {
+    exec(`osascript -e 'tell application "System Events" to keystroke "${msg}"'`);
   });
 
   socket.on("disconnect", () => {

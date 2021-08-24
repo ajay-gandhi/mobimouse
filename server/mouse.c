@@ -15,7 +15,7 @@ int main() {
   char *line = NULL;
   size_t size;
 
-  CGEventRef current_mouse, move;
+  CGEventRef current_mouse, operation;
 
   while (1) {
     if (getline(&line, &size, stdin) == -1) {
@@ -26,7 +26,7 @@ int main() {
         CGPoint cursor = CGEventGetLocation(current_mouse);
         CFRelease(current_mouse);
 
-        move = CGEventCreateMouseEvent(
+        operation = CGEventCreateMouseEvent(
             NULL,
             line[0] == 'd' ? kCGEventLeftMouseDown : kCGEventLeftMouseUp,
             CGPointMake((int) cursor.x, (int) cursor.y),
@@ -41,7 +41,7 @@ int main() {
         int new_x = atoi(line);
 
         // Move cursor
-        move = CGEventCreateMouseEvent(
+        operation = CGEventCreateMouseEvent(
           NULL,
           kCGEventMouseMoved,
           CGPointMake(new_x, new_y),
@@ -49,8 +49,8 @@ int main() {
         );
 
       }
-      CGEventPost(kCGHIDEventTap, move);
-      CFRelease(move);
+      CGEventPost(kCGHIDEventTap, operation);
+      CFRelease(operation);
     }
   }
   return 0;

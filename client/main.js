@@ -6,7 +6,7 @@ const rightButton = document.querySelector("#right-click");
 const trackpad = document.querySelector("#trackpad");
 const textInput = document.querySelector("#text");
 
-// Trackpad
+/********************************** Trackpad **********************************/
 const lastPosition = {
   x: 0,
   y: 0,
@@ -45,17 +45,23 @@ trackpad.addEventListener("touchmove", (e) => {
   lastPosition.y = scaledY;
 });
 
-// Mouse buttons
+/*********************************** Mouse ************************************/
 const touchStart = (buttonChar, e) => {
   e.preventDefault();
-  socket.emit("command", `d${buttonChar}`);
+  socket.emit("click", `d${buttonChar}`);
 };
 const touchEnd = (buttonChar, e) => {
   e.preventDefault();
-  socket.emit("command", `u${buttonChar}`);
+  socket.emit("click", `u${buttonChar}`);
 };
 
 leftButton.addEventListener("touchstart", touchStart.bind(null, "l"));
 leftButton.addEventListener("touchend", touchEnd.bind(null, "l"));
 rightButton.addEventListener("touchstart", touchStart.bind(null, "r"));
 rightButton.addEventListener("touchend", touchEnd.bind(null, "r"));
+
+/************************************ Text ************************************/
+textInput.addEventListener("keypress", (e) => {
+  e.preventDefault();
+  socket.emit("type", e.key);
+});
