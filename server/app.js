@@ -8,6 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+const PORT = process.argv[1] || 4000;
 const SENSITIVITY = 1;
 const PATH_TO_MOUSE_MOVER = path.join(__dirname, "mouse");
 
@@ -87,6 +88,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(4000, () => {
-  console.log("Listening on *:4000");
+server.listen(PORT, () => {
+  console.log(`Listening on *:${PORT}`);
 });
