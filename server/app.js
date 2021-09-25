@@ -9,8 +9,15 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const PORT = process.argv[1] || 4000;
+const DEBUG = process.argv.reduce((acc, arg) => acc || arg === "--debug", false);
 const SENSITIVITY = 1;
 const PATH_TO_MOUSE_MOVER = path.join(__dirname, "mouse");
+
+const debug = () => {
+  if (DEBUG) {
+    console.log(...arguments);
+  }
+};
 
 // Fetch screen res
 let SCREEN_MULTIPLIER;
@@ -45,7 +52,7 @@ io.on("connection", (socket) => {
 
   // Click commands
   socket.on("click", (msg) => {
-    console.log(`  Received click, writing to mover: ${msg}`);
+    debug(`  Received click, writing to mover: ${msg}`);
     mouseMover.stdin.cork();
     mouseMover.stdin.write(`${msg}\n`);
     mouseMover.stdin.uncork();
@@ -61,7 +68,7 @@ io.on("connection", (socket) => {
     });
     const newX = lastPosition.x - x;
     const newY = lastPosition.y - y;
-    console.log(`  Received move: ${msg}, writing to mover: ${newX},${newY}`);
+    debug(`  Received move: ${msg}, writing to mover: ${newX},${newY}`);
     mouseMover.stdin.cork();
     mouseMover.stdin.write(`${newX},${newY}\n`);
     mouseMover.stdin.uncork();
@@ -71,7 +78,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("type", (msg) => {
-    console.log(`  Received type: ${msg}, executing Applescript`);
+    debug(`  Received type: ${msg}, executing Applescript`);
     if (msg === "Enter") {
       exec(`osascript -e 'tell application "System Events" to keystroke (ASCII character 13)'`);
     } else if (msg === "Backspace") {
