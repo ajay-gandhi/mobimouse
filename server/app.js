@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-const PORT = process.argv[1] || 4000;
+const PORT = process.argv[2] || 4000;
 const DEBUG = process.argv.reduce((acc, arg) => acc || arg === "--debug", false);
 const SENSITIVITY = 1;
 const PATH_TO_MOUSE_MOVER = path.join(__dirname, "mouse");
